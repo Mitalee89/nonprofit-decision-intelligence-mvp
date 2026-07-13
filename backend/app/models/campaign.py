@@ -5,14 +5,8 @@ from enum import Enum
 from typing import Optional
 
 from sqlmodel import Field, Relationship
-
+from app.domain.enums import CampaignStatus
 from app.models.base import BaseEntity
-
-
-class CampaignStatus(str, Enum):
-    DRAFT = "Draft"
-    ACTIVE = "Active"
-    COMPLETED = "Completed"
 
 
 class Campaign(BaseEntity, table=True):

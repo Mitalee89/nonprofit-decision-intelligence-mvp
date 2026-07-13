@@ -18,7 +18,11 @@ class Donation(BaseEntity, table=True):
 
     donation_date: date
 
-    status: str = "Received"
+    from app.domain.enums import DonationStatus
+
+    status: DonationStatus = Field(
+        default=DonationStatus.RECEIVED
+    )
 
     donor: "Donor" = Relationship(
         back_populates="donations"

@@ -21,7 +21,11 @@ class Grant(BaseEntity, table=True):
 
     deadline: date
 
-    status: str = "Open"
+    from app.domain.enums import GrantStatus
+
+    status: GrantStatus = Field(
+        default=GrantStatus.OPEN
+    )
 
     grant_matches: list["GrantMatch"] = Relationship(
         back_populates="grant"

@@ -21,7 +21,11 @@ class Fund(BaseEntity, table=True):
 
     allocated_amount: float = 0
 
-    status: str = "Active"
+    from app.domain.enums import FundStatus
+
+    status: FundStatus = Field(
+        default=FundStatus.ACTIVE
+    )
 
     campaign: Optional["Campaign"] = Relationship(
         back_populates="fund"
