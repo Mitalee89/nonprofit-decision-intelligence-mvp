@@ -1,9 +1,8 @@
 from sqlmodel import SQLModel, create_engine
-
-DATABASE_URL = "sqlite:///nonprofit.db"
+from app.core.config import settings
 
 engine = create_engine(
-    DATABASE_URL,
+    settings.database_url,
     echo=True,
 )
 
