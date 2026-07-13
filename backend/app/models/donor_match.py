@@ -1,4 +1,6 @@
-from sqlmodel import Field
+from __future__ import annotations
+
+from sqlmodel import Field, Relationship
 
 from app.models.base import BaseEntity
 
@@ -13,3 +15,11 @@ class DonorMatch(BaseEntity, table=True):
     confidence_score: float
 
     reasoning: str
+
+    campaign: "Campaign" = Relationship(
+        back_populates="donor_matches"
+    )
+
+    donor: "Donor" = Relationship(
+        back_populates="donor_matches"
+    )

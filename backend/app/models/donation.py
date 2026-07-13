@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from datetime import date
 
-from sqlmodel import Field
+from sqlmodel import Field, Relationship
 
 from app.models.base import BaseEntity
 
@@ -17,3 +19,11 @@ class Donation(BaseEntity, table=True):
     donation_date: date
 
     status: str = "Received"
+
+    donor: "Donor" = Relationship(
+        back_populates="donations"
+    )
+
+    fund: "Fund" = Relationship(
+        back_populates="donations"
+    )
