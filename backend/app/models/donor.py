@@ -1,0 +1,21 @@
+from typing import Optional
+
+from sqlmodel import Field
+
+from app.models.base import BaseEntity
+
+
+class Donor(BaseEntity, table=True):
+    __tablename__ = "donors"
+
+    name: str
+
+    email: str
+
+    city: Optional[str] = None
+
+    interests: Optional[str] = None
+
+    preferred_cause: Optional[str] = None
+
+    capacity: float = 0
