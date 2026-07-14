@@ -9,7 +9,7 @@ class CampaignStatus(str, Enum):
 
 
 class FundStatus(str, Enum):
-    ACTIVE = "Active"
+    OPEN = "Open"
     CLOSED = "Closed"
 
 
@@ -24,3 +24,9 @@ class GrantStatus(str, Enum):
     UNDER_REVIEW = "Under Review"
     ASSIGNED = "Assigned"
     CLOSED = "Closed"
+
+class MatchStatus(str, Enum):
+    PENDING = "Pending"
+    RECOMMENDED = "Recommended"
+    ACCEPTED = "Accepted"
+    REJECTED = "Rejected"

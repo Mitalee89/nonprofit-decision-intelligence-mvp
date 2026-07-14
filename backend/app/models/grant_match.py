@@ -15,11 +15,3 @@ class GrantMatch(BaseEntity, table=True):
     confidence_score: float
 
     reasoning: str
-
-    campaign: "Campaign" = Relationship(
-        back_populates="grant_matches"
-    )
-
-    grant: "Grant" = Relationship(
-        back_populates="grant_matches"
-    )

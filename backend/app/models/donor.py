@@ -22,10 +22,4 @@ class Donor(BaseEntity, table=True):
 
     capacity: float = 0
 
-    donations: list["Donation"] = Relationship(
-        back_populates="donor"
-    )
-
-    donor_matches: list["DonorMatch"] = Relationship(
-        back_populates="donor"
-    )
+ 

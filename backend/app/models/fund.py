@@ -1,36 +1,30 @@
-from __future__ import annotations
-
-from typing import Optional
+from typing import TYPE_CHECKING
 
 from sqlmodel import Field, Relationship
 
 from app.models.base import BaseEntity
+from app.models.enums import FundStatus
+from decimal import Decimal
+
+if TYPE_CHECKING:
+    from app.models.campaign import Campaign
+    from app.models.donation import Donation
 
 
 class Fund(BaseEntity, table=True):
     __tablename__ = "funds"
 
-    campaign_id: int = Field(
-    foreign_key="campaigns.id",
-    unique=True
-    )
-
-    fund_name: str
-
-    available_amount: float = 0
-
-    allocated_amount: float = 0
-
-    from app.domain.enums import FundStatus
-
+    name: str = Field(index=True, max_length=200)
+    balance: Decimal = Field(default=Decimal("0.00"), ge=0)
+    total_received: Decimal = Field(default=Decimal("0.00"), ge=0)
     status: FundStatus = Field(
-        default=FundStatus.ACTIVE
+        default=FundStatus.OPEN
     )
 
-    campaign: Optional["Campaign"] = Relationship(
-        back_populates="fund"
+    # One Fund belongs to one Campaign
+    campaign_id: int = Field(
+        foreign_key="campaigns.id",
+        unique=True,
+        nullable=False,
     )
 
-    donations: list["Donation"] = Relationship(
-        back_populates="fund"
-    )

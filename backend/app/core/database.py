@@ -19,6 +19,8 @@ engine = create_engine(
     connect_args={"check_same_thread": False},  # Required for SQLite
 )
 
+# Import all models so SQLAlchemy registers them
+import app.models
 
 def create_db_and_tables() -> None:
     """Create all database tables."""

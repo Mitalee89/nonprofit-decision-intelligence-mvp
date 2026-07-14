@@ -1,35 +1,31 @@
-from __future__ import annotations
-
 from datetime import date
-from enum import Enum
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
+from decimal import Decimal
 
 from sqlmodel import Field, Relationship
-from app.domain.enums import CampaignStatus
+
 from app.models.base import BaseEntity
+from app.models.enums import CampaignStatus
+
+if TYPE_CHECKING:
+    from app.models.fund import Fund
+    from app.models.donor_match import DonorMatch
+    from app.models.grant_match import GrantMatch
 
 
 class Campaign(BaseEntity, table=True):
     __tablename__ = "campaigns"
 
-    name: str
+    name: str = Field(index=True, max_length=200)
 
-    description: Optional[str] = None
-
-    goal_amount: float
-
-    start_date: date
-
-    end_date: date
-
-    status: CampaignStatus = Field(default=CampaignStatus.DRAFT)
-
-    fund: Optional["Fund"] = Relationship(back_populates="campaign")
-
-    donor_matches: list["DonorMatch"] = Relationship(
-        back_populates="campaign"
+    description: Optional[str] = Field(
+        default=None,
+        max_length=1000,
     )
-
-    grant_matches: list["GrantMatch"] = Relationship(
-        back_populates="campaign"
+    goal_amount: Decimal = Field(default=Decimal("0.00"), ge=0)
+    amount_raised: Decimal = Field(default=Decimal("0.00"), ge=0)
+    start_date: date
+    end_date: date
+    status: CampaignStatus = Field(
+        default=CampaignStatus.DRAFT
     )
