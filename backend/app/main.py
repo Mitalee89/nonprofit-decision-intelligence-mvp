@@ -6,6 +6,7 @@ from app.api.routes import funds
 from app.api.routes import donors
 from app.api.routes import donations
 from app.api.routes import grants
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI(
@@ -23,3 +24,14 @@ app.include_router(funds.router)
 app.include_router(donors.router)
 app.include_router(donations.router)
 app.include_router(grants.router)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
