@@ -1,6 +1,8 @@
 import api from "./api";
 
-export const getCampaigns = () => api.get("/campaigns");
+export const getCampaigns = async () => {
+    return await api.get("/campaigns");
+};
 
 export const getCampaign = (id) =>
   api.get(`/campaigns/${id}`);
