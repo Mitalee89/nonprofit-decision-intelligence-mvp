@@ -9,24 +9,20 @@ function getBadgeColor(score) {
     return "bg-red-100 text-red-700";
 }
 
-
-export default function RecommendationTable({
+export default function GrantRecommendationTable({
     recommendations,
 }) {
-
-    if (!recommendations)
-        recommendations = [];
 
     if (!Array.isArray(recommendations))
         recommendations = [];
 
-    if (!Array.isArray(recommendations) || recommendations.length === 0) {
+    if (recommendations.length === 0) {
 
         return (
 
             <div className="text-gray-500 text-center py-8">
 
-                No recommendations generated yet.
+                No grant recommendations generated yet.
 
             </div>
 
@@ -45,7 +41,7 @@ export default function RecommendationTable({
                     <tr className="border-b">
 
                         <th className="text-left p-4">
-                            Donor
+                            Grant
                         </th>
 
                         <th className="text-left p-4">

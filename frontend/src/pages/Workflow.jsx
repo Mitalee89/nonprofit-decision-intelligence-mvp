@@ -7,12 +7,18 @@ import RecommendationTable from "../components/workflow/RecommendationTable";
 import { getCampaigns } from "../api/campaignApi";
 import { recommendDonors } from "../api/aiApi";
 
+import GrantRecommendationTable from "../components/workflow/GrantRecommendationTable";
+import { recommendGrants } from "../api/grantApi";
+
 export default function Workflow() {
     const [campaigns, setCampaigns] = useState([]);
     const [selectedCampaign, setSelectedCampaign] = useState("");
 
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    const [grantRecommendations, setGrantRecommendations] = useState([]);
+    const [grantLoading, setGrantLoading] = useState(false);
 
     useEffect(() => {
         loadCampaigns();
@@ -43,15 +49,60 @@ export default function Workflow() {
 
     async function runRecommendation() {
 
+        if (!selectedCampaign) return;
+
+        setLoading(true);
+
+        try {
+
+            const response = await recommendDonors(selectedCampaign);
+
+            const recommendations =
+                response?.data ??
+                response ??
+                [];
+
+            setRecommendations(
+                Array.isArray(recommendations)
+                    ? recommendations
+                    : []
+            );
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert(
+                err.response?.data?.detail ??
+                err.message ??
+                "Unable to generate donor recommendations."
+            );
+
+            setRecommendations([]);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+    }
+
+    async function runGrantRecommendation() {
+
     if (!selectedCampaign) return;
 
-    setLoading(true);
+    setGrantLoading(true);
 
     try {
 
-        const recommendations = await recommendDonors(selectedCampaign);
+        const response = await recommendGrants(selectedCampaign);
 
-        setRecommendations(
+        const recommendations =
+            response?.data ??
+            response ??
+            [];
+
+        setGrantRecommendations(
             Array.isArray(recommendations)
                 ? recommendations
                 : []
@@ -64,18 +115,17 @@ export default function Workflow() {
         alert(
             err.response?.data?.detail ??
             err.message ??
-            "Unable to generate donor recommendations."
+            "Unable to generate grant recommendations."
         );
 
-        setRecommendations([]);
+        setGrantRecommendations([]);
 
     } finally {
 
-        setLoading(false);
+        setGrantLoading(false);
 
     }
 }
-console.log("Current recommendations state:", recommendations);
     return (
         <div className="space-y-8 p-6">
 
@@ -121,14 +171,35 @@ console.log("Current recommendations state:", recommendations);
                 onClick={runRecommendation}
             />
 
+            <RecommendationCard
+                title="AI Grant Recommendation"
+                description="Find the most suitable grants for the selected campaign using the LLM recommendation engine."
+                buttonText={
+                    grantLoading
+                        ? "Generating..."
+                        : "Recommend Grants"
+                }
+                onClick={runGrantRecommendation}
+            />
+
             {loading && (
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-700 font-medium">
                     Generating donor recommendations...
                 </div>
             )}
 
+            {grantLoading && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-green-700 font-medium">
+                    Generating grant recommendations...
+                </div>
+            )}
+
             <RecommendationTable
                 recommendations={recommendations}
+            />
+
+            <GrantRecommendationTable
+                recommendations={grantRecommendations}
             />
 
         </div>
