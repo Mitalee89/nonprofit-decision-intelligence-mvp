@@ -28,6 +28,8 @@ from app.services.llm_service import LLMService
 from app.repositories.donor_match_repository import DonorMatchRepository
 from app.services.donor_match_service import DonorMatchService
 
+from app.repositories.grant_match_repository import GrantMatchRepository
+from app.services.grant_match_service import GrantMatchService
 
 # ------------------------------------------------------------------
 # Database Session
@@ -67,6 +69,11 @@ def get_grant_repository(
     session: Session = Depends(get_session),
 ) -> GrantRepository:
     return GrantRepository(session)
+
+def get_grant_match_repository(
+    session: Session = Depends(get_session),
+) -> GrantMatchRepository:
+    return GrantMatchRepository(session)
 
 # ------------------------------------------------------------------
 # Services
@@ -123,6 +130,11 @@ def get_donor_match_service(
     repository = DonorMatchRepository(session)
     return DonorMatchService(repository)
 
+def get_grant_match_service(
+    repository: GrantMatchRepository = Depends(get_grant_match_repository),
+) -> GrantMatchService:
+    return GrantMatchService(repository)
+
 def get_llm_service(
 
     campaign_service: CampaignService = Depends(
@@ -133,8 +145,16 @@ def get_llm_service(
         get_donor_service
     ),
 
+    grant_service: GrantService = Depends(
+        get_grant_service
+    ),
+
     donor_match_service: DonorMatchService = Depends(
         get_donor_match_service
+    ),
+
+    grant_match_service: GrantMatchService = Depends(
+        get_grant_match_service
     ),
 
 ):
@@ -145,6 +165,11 @@ def get_llm_service(
 
         donor_service,
 
+        grant_service,
+
         donor_match_service,
 
+        grant_match_service,
+
     )
+

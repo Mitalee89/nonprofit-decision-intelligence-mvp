@@ -3,6 +3,7 @@ from urllib import response
 from app.llm.client import generate
 from app.llm.parser import parse_recommendations
 from app.llm.prompts import donor_recommendation_prompt
+from app.llm.models import DonorRecommendationResponse
 
 
 def recommend_donors(
@@ -23,12 +24,9 @@ def recommend_donors(
 
     response = generate(prompt)
 
-    print("\n========== RAW LLM RESPONSE ==========\n")
-    print(response)
-    print("\n=====================================\n")
 
     recommendations = parse_recommendations(
-        response
+        response, DonorRecommendationResponse,
     )
 
     return recommendations

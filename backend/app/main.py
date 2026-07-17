@@ -8,6 +8,7 @@ from app.api.routes import donations
 from app.api.routes import grants
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import ai
+from app.api.routes import grant_ai
 
 
 app = FastAPI(
@@ -26,6 +27,7 @@ app.include_router(donors.router)
 app.include_router(donations.router)
 app.include_router(grants.router)
 app.include_router(ai.router)
+app.include_router(grant_ai.router)
 
 app.add_middleware(
     CORSMiddleware,

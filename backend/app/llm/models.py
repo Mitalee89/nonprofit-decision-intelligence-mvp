@@ -9,3 +9,13 @@ class DonorRecommendation(BaseModel):
 
 class DonorRecommendationResponse(BaseModel):
     recommendations: list[DonorRecommendation]
+
+
+class GrantRecommendation(BaseModel):
+    grant_id: int = Field(..., description="Recommended grant ID")
+    confidence: int = Field(..., ge=0, le=100)
+    reasoning: str
+
+
+class GrantRecommendationResponse(BaseModel):
+    recommendations: list[GrantRecommendation]

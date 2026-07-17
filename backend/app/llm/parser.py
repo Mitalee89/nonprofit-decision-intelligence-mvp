@@ -1,13 +1,21 @@
 import json
+from typing import Type
 
 from app.llm.models import DonorRecommendationResponse
+from app.llm.models import GrantRecommendationResponse
 
 from app.llm.models import (
     DonorRecommendationResponse,
+    GrantRecommendationResponse,
 )
 
 
-def parse_recommendations(response: str):
+from typing import Type
+
+def parse_recommendations(
+    response: str,
+    response_model: Type,
+):
 
     data = json.loads(response)
 
@@ -19,7 +27,6 @@ def parse_recommendations(response: str):
     if "recommendations" not in data:
         raise ValueError("LLM response missing recommendations.")
 
-    # Normalize LLM output
     for recommendation in data["recommendations"]:
 
         if (
@@ -35,4 +42,4 @@ def parse_recommendations(response: str):
 
     data["recommendations"] = data["recommendations"][:5]
 
-    return DonorRecommendationResponse.model_validate(data)
+    return response_model.model_validate(data)
