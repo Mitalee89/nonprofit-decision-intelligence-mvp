@@ -15,8 +15,8 @@ class DonorRepository(BaseRepository[Donor]):
         )
         return self.session.exec(statement).first()
 
-    def get_active_donors(self) -> list[Donor]:
-        statement = select(Donor).where(
-            Donor.is_active == True
-        )
+    def get_all_donors(self) -> list[Donor]:
+    
+        statement = select(Donor)
+
         return list(self.session.exec(statement))

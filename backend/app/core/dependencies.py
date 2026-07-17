@@ -20,6 +20,14 @@ from app.services.donation_service import DonationService
 from app.repositories.grant_repository import GrantRepository
 from app.services.grant_service import GrantService
 
+from sqlmodel import Session
+from fastapi import Depends
+
+from app.core.database import get_session
+from app.services.llm_service import LLMService
+from app.repositories.donor_match_repository import DonorMatchRepository
+from app.services.donor_match_service import DonorMatchService
+
 
 # ------------------------------------------------------------------
 # Database Session
@@ -108,3 +116,35 @@ def get_grant_service(
 ) -> GrantService:
 
     return GrantService(repository)
+
+def get_donor_match_service(
+    session: Session = Depends(get_session),
+    ):
+    repository = DonorMatchRepository(session)
+    return DonorMatchService(repository)
+
+def get_llm_service(
+
+    campaign_service: CampaignService = Depends(
+        get_campaign_service
+    ),
+
+    donor_service: DonorService = Depends(
+        get_donor_service
+    ),
+
+    donor_match_service: DonorMatchService = Depends(
+        get_donor_match_service
+    ),
+
+):
+
+    return LLMService(
+
+        campaign_service,
+
+        donor_service,
+
+        donor_match_service,
+
+    )

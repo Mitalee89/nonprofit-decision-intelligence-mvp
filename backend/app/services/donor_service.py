@@ -51,7 +51,7 @@ class DonorService:
     ) -> Optional[Donor]:
 
         donor = self.donor_repository.get_by_id(donor_id)
-
+        
         if donor is None:
             return None
 
@@ -69,8 +69,8 @@ class DonorService:
 
         return self.donor_repository.delete(donor_id)
 
-    def get_active_donors(
+    def get_all_donors(
         self,
     ) -> list[Donor]:
 
-        return self.donor_repository.get_active_donors()
+        return self.donor_repository.get_all_donors()

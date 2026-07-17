@@ -11,13 +11,14 @@ def generate(prompt: str) -> str:
     """
 
     response = requests.post(
-        OLLAMA_URL,
-        json={
-            "model": MODEL,
-            "prompt": prompt,
-            "stream": False,
-        },
-        timeout=120,
+    OLLAMA_URL,
+    json={
+        "model": MODEL,
+        "prompt": prompt,
+        "stream": False,
+        "temperature": 0,
+    },
+    timeout=120,
     )
 
     response.raise_for_status()

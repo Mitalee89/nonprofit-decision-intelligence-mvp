@@ -8,5 +8,5 @@ faker==37.5.3
 python-dotenv==1.1.1
 httpx
 pytest
-"pydantic[email]"
+pydantic[email]
 requests
